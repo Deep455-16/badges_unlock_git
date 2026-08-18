@@ -5,9 +5,14 @@
         "id": "first_pr",
         "unlockedAt": "2026-08-18T22:14:35.576018+00:00",
         "prNumber": 1
+      },
+      {
+        "id": "quick_merge",
+        "unlockedAt": "2026-08-18T22:20:57.497643+00:00",
+        "prNumber": 4
       }
     ],
     "prOpenedCount": 4,
-    "prMergedCount": 0
+    "prMergedCount": 1
   }
 }
