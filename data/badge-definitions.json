@@ -1,0 +1,66 @@
+[
+  {
+    "id": "first_pr",
+    "name": "First Contribution",
+    "emoji": "🎉",
+    "description": "Opened your very first pull request on this repo.",
+    "type": "pr_opened_count",
+    "threshold": 1
+  },
+  {
+    "id": "getting_started",
+    "name": "Getting Started",
+    "emoji": "🔥",
+    "description": "Got 3 pull requests merged.",
+    "type": "pr_merged_count",
+    "threshold": 3
+  },
+  {
+    "id": "power_contributor",
+    "name": "Power Contributor",
+    "emoji": "🚀",
+    "description": "Got 10 pull requests merged.",
+    "type": "pr_merged_count",
+    "threshold": 10
+  },
+  {
+    "id": "century_club",
+    "name": "Century Club",
+    "emoji": "🌟",
+    "description": "Got 100 pull requests merged. Legend status.",
+    "type": "pr_merged_count",
+    "threshold": 100
+  },
+  {
+    "id": "bug_hunter",
+    "name": "Bug Hunter",
+    "emoji": "🐛",
+    "description": "Merged a pull request labeled 'bug'.",
+    "type": "label_merged",
+    "label": "bug"
+  },
+  {
+    "id": "feature_builder",
+    "name": "Feature Builder",
+    "emoji": "✨",
+    "description": "Merged a pull request labeled 'feature'.",
+    "type": "label_merged",
+    "label": "feature"
+  },
+  {
+    "id": "docs_hero",
+    "name": "Docs Hero",
+    "emoji": "📚",
+    "description": "Merged a pull request labeled 'documentation'.",
+    "type": "label_merged",
+    "label": "documentation"
+  },
+  {
+    "id": "quick_merge",
+    "name": "Quick Merge",
+    "emoji": "⚡",
+    "description": "Had a pull request merged within 1 hour of opening it.",
+    "type": "speed_merge",
+    "seconds": 3600
+  }
+]

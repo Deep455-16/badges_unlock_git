@@ -1,0 +1,49 @@
+name: Unlock Badges
+
+# Runs the badge bot backend every time a pull request is opened or closed
+# (merged). Uses pull_request_target so it also works correctly for PRs
+# opened from forks, and has permission to commit the updated badge data
+# back into the repo.
+on:
+  pull_request_target:
+    types: [opened, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  unlock-badges:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout base branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install backend dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Run badge unlocker
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+          REPO: ${{ github.repository }}
+        run: python scripts/unlock_badges.py
+
+      - name: Commit updated badge data
+        run: |
+          git config user.name "badge-bot"
+          git config user.email "badge-bot@users.noreply.github.com"
+          git add data/badges.json
+          if git diff --cached --quiet; then
+            echo "No badge changes to commit."
+          else
+            git commit -m "chore: update badges [skip ci]"
+            git push origin HEAD:${{ github.event.pull_request.base.ref }}
+          fi

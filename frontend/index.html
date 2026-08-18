@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Badge Bot 🤖</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body data-theme="dark">
+
+  <div class="app-container">
+    <div class="main-panel">
+      <header class="app-header">
+        <h2>Configuration & Terminal</h2>
+        <button id="theme-toggle" class="theme-btn">☀️ Light Mode</button>
+      </header>
+      
+      <form id="config-form" class="config-form">
+        <div class="form-group">
+          <label for="repo-url">GitHub Repository URL</label>
+          <input type="text" id="repo-url" placeholder="https://github.com/owner/repo" required />
+        </div>
+        <div class="form-group">
+          <label for="github-pat">Personal Access Token (PAT)</label>
+          <input type="password" id="github-pat" placeholder="ghp_xxxxxxxxxxxx" required />
+        </div>
+        <button type="submit" id="start-btn">Start Bot Execution</button>
+      </form>
+
+      <div class="terminal-container">
+        <div id="terminal-log" class="terminal-log">
+          <div>> Waiting for configuration...</div>
+        </div>
+        <div id="confirmation-panel" class="confirmation-panel hidden">
+          <p id="confirmation-text">Proceed with action?</p>
+          <div class="confirmation-buttons">
+            <button id="btn-yes" class="btn btn-yes">Yes</button>
+            <button id="btn-no" class="btn btn-no">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-widget">
+      <header class="chat-header">
+        <div class="bot-avatar">🤖</div>
+        <div>
+          <h1>Badge Bot</h1>
+          <p id="repo-label">Waiting for repo…</p>
+        </div>
+      </header>
+  
+      <div id="chat-log" class="chat-log"></div>
+  
+      <form id="chat-form" class="chat-input-row">
+        <input
+          id="chat-input"
+          type="text"
+          autocomplete="off"
+          placeholder="Type your GitHub username, or 'help'…"
+        />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="chatbot.js"></script>
+</body>
+</html>
