@@ -1,1 +1,13 @@
-{}
+{
+  "Deep455-16": {
+    "badges": [
+      {
+        "id": "first_pr",
+        "unlockedAt": "2026-08-18T22:14:35.576018+00:00",
+        "prNumber": 1
+      }
+    ],
+    "prOpenedCount": 1,
+    "prMergedCount": 0
+  }
+}
