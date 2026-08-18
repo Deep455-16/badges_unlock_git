@@ -187,10 +187,24 @@ def run_api_operations(pat, owner, repo, default_branch, target_badge):
             except Exception:
                 broadcast("log", f"⚠️  Could not add label '{lbl}'. Create it on GitHub first if needed.")
 
+        # ── 8. Merge the PR ──────────────────────────────────────────────────
+        broadcast("confirm", f"Merge PR #{pr_number} automatically? Proceed?", "merge")
+        if session.confirm_queue.get() != "yes":
+            broadcast("log", f"⚠️  PR #{pr_number} left open. You can merge it manually on GitHub.")
+        else:
+            broadcast("log", "🔗 Merging Pull Request…")
+            try:
+                merge_res = gh_put(pat, f"/repos/{owner}/{repo}/pulls/{pr_number}/merge", {
+                    "commit_title": f"Merge pull request #{pr_number} from {branch_name}",
+                    "merge_method": "merge"
+                })
+                broadcast("log", f"✅ PR #{pr_number} merged successfully!")
+            except Exception as e:
+                broadcast("log", f"❌ Failed to merge PR: {e}")
+
         broadcast("done",
             f"🎉 All done! PR #{pr_number}: {pr_url}\n"
-            "GitHub Actions will run and unlock your badge.\n"
-            "Type your GitHub username in the chatbot to check progress.")
+            "GitHub Actions is running to unlock your badge now!")
 
     except requests.HTTPError as exc:
         status = exc.response.status_code if exc.response is not None else "?"
@@ -286,6 +300,16 @@ def connect_bot():
     except Exception as exc:
         return jsonify({"error": str(exc)}), 400
 
+    # ── Step 2: Test if token has write (push) access to this repo ────────
+    perms = repo_json.get("permissions", {})
+    if not perms.get("push", False):
+        return jsonify({"error": (
+            "Your token does NOT have write (push) access to this repository.\n\n"
+            "1. If this is not your repo, you cannot push branches to it.\n"
+            "2. If it is your repo, your token is missing the 'repo' scope (Classic PAT) "
+            "or 'Contents: Read & Write' (Fine-grained PAT)."
+        )}), 403
+
     default_branch = repo_json.get("default_branch", "main")
 
     # ── Step 2: Test write access by attempting to read git refs ────────────
@@ -350,7 +374,8 @@ def plan():
         f"3️⃣  Create branch `badge-bot-<uid>` on GitHub",
         f"4️⃣  Commit via GitHub Contents API: `{info['commit']}`",
         f"5️⃣  Open Pull Request: \"{info['title']}\"{lbl_note}",
-        f"6️⃣  GitHub Actions runs → badge unlocked 🏅",
+        f"6️⃣  Merge Pull Request automatically",
+        f"7️⃣  GitHub Actions runs → badge unlocked 🏅",
     ]
     return jsonify({"badge_id": badge_id, "steps": steps})
 

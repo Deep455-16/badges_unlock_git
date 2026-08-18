@@ -123,7 +123,18 @@ evtSource.onmessage = async (event) => {
         startBtn.disabled = false;
         startBtn.textContent = "▶ Start Execution";
         pendingBadge = null;
-        setTimeout(loadBadgeData, 10000);
+
+        // Auto-refresh badges and display for the user
+        setTimeout(async () => {
+          await loadBadgeData();
+          const profileUrl = document.getElementById("github-profile").value.trim();
+          if (profileUrl) {
+             const username = profileUrl.split("/").filter(Boolean).pop();
+             if (username) renderUserBadges(username);
+          } else {
+             addMsg("Type your GitHub username here to see your updated badges!");
+          }
+        }, 12000); // 12 second delay to let GitHub Actions finish running
         break;
 
       case "confirm":
