@@ -9,59 +9,85 @@
 <body data-theme="dark">
 
   <div class="app-container">
+
+    <!-- ════════════ LEFT: Config + Terminal ════════════ -->
     <div class="main-panel">
       <header class="app-header">
-        <h2>Configuration & Terminal</h2>
+        <h2>⚙️ Config &amp; Terminal</h2>
         <button id="theme-toggle" class="theme-btn">☀️ Light Mode</button>
       </header>
-      
+
       <form id="config-form" class="config-form">
         <div class="form-group">
-          <label for="repo-url">GitHub Repository URL</label>
-          <input type="text" id="repo-url" placeholder="https://github.com/owner/repo" required />
+          <label for="github-profile">GitHub Profile URL <span class="optional">(optional)</span></label>
+          <input type="text" id="github-profile"
+                 placeholder="https://github.com/your-username" />
         </div>
+
         <div class="form-group">
-          <label for="github-pat">Personal Access Token (PAT)</label>
-          <input type="password" id="github-pat" placeholder="ghp_xxxxxxxxxxxx" required />
+          <label for="repo-url">GitHub Repository URL <span class="required">*</span></label>
+          <input type="text" id="repo-url"
+                 placeholder="https://github.com/owner/repo" required />
         </div>
-        <button type="submit" id="start-btn">Start Bot Execution</button>
+
+        <div class="form-group">
+          <label for="github-pat">
+            GitHub Token (PAT) <span class="required">*</span>
+            <span class="pat-hint" title="Go to GitHub → Settings → Developer Settings → Personal Access Tokens → Generate new token (classic). Select 'repo' scope.">❓</span>
+          </label>
+          <input type="password" id="github-pat"
+                 placeholder="ghp_xxxxxxxxxxxx — needed to push & open PRs" required />
+          <small class="hint-text">
+            Generate at <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a>
+            with <code>repo</code> scope. Stored in memory only — never saved.
+          </small>
+        </div>
+
+        <div class="form-buttons">
+          <button type="button" id="connect-btn">🔌 Connect</button>
+          <button type="submit" id="start-btn" disabled>▶ Start Execution</button>
+        </div>
       </form>
 
+      <!-- Terminal -->
       <div class="terminal-container">
         <div id="terminal-log" class="terminal-log">
-          <div>> Waiting for configuration...</div>
+          <div>> Badge Bot ready. Fill in the form and click Connect.</div>
         </div>
         <div id="confirmation-panel" class="confirmation-panel hidden">
-          <p id="confirmation-text">Proceed with action?</p>
+          <p id="confirmation-text">Proceed?</p>
           <div class="confirmation-buttons">
-            <button id="btn-yes" class="btn btn-yes">Yes</button>
-            <button id="btn-no" class="btn btn-no">No</button>
+            <button id="btn-yes" class="btn btn-yes">✅ Yes</button>
+            <button id="btn-no"  class="btn btn-no" >❌ No</button>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- ════════════ RIGHT: Badge Chatbot ════════════ -->
     <div class="chat-widget">
       <header class="chat-header">
         <div class="bot-avatar">🤖</div>
         <div>
           <h1>Badge Bot</h1>
-          <p id="repo-label">Waiting for repo…</p>
+          <p id="repo-label">Connect a repo to start →</p>
         </div>
       </header>
-  
-      <div id="chat-log" class="chat-log"></div>
-  
+
+      <div id="chat-log" class="chat-log">
+        <div class="msg bot">
+          👋 Hi! I'm Badge Bot.<br><br>
+          Fill in the <strong>Repository URL</strong> and your <strong>GitHub Token</strong> on the left, then click <strong>Connect</strong>.
+        </div>
+      </div>
+
       <form id="chat-form" class="chat-input-row">
-        <input
-          id="chat-input"
-          type="text"
-          autocomplete="off"
-          placeholder="Type your GitHub username, or 'help'…"
-        />
+        <input id="chat-input" type="text" autocomplete="off"
+               placeholder="Connect first, then tell me your goal…" />
         <button type="submit">Send</button>
       </form>
     </div>
+
   </div>
 
   <script src="chatbot.js"></script>
