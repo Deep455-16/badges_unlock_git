@@ -169,8 +169,26 @@ connectBtn.addEventListener("click", async () => {
   const data = await res.json();
 
   if (!res.ok) {
-    addMsg(`❌ ${data.error}`);
-    termLine(`Error: ${data.error}`, "#f55");
+    const errText = data.error || "Unknown error";
+    termLine(`Error: ${errText}`, "#f55");
+
+    // Show rich PAT help if it's a permission issue
+    if (errText.toLowerCase().includes("token") || errText.toLowerCase().includes("permission") || errText.toLowerCase().includes("403") || errText.toLowerCase().includes("scope")) {
+      addMsg(
+        `❌ <strong>Token Permission Error</strong><br><br>` +
+        `Your GitHub Token doesn't have write access.<br><br>` +
+        `<strong>How to fix:</strong><br>` +
+        `1. Go to <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a><br>` +
+        `2. Click <strong>Generate new token (classic)</strong><br>` +
+        `3. Check the <strong>repo</strong> scope (the top-level one — gives full repo access)<br>` +
+        `4. Click Generate, copy the token, paste it here<br><br>` +
+        `If using a Fine-grained token:<br>` +
+        `→ Repository permissions → <strong>Contents: Read and write</strong><br>` +
+        `→ Repository permissions → <strong>Pull requests: Read and write</strong>`
+      );
+    } else {
+      addMsg(`❌ ${errText}`);
+    }
     connectBtn.disabled = false;
     connectBtn.textContent = "🔌 Connect";
     return;
